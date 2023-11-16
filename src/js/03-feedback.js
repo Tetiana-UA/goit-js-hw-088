@@ -14,7 +14,7 @@ refs.formElem.addEventListener('submit', onFormSubmit);
 
 function onFormInput(e) {
   const key = e.target.email;
-  const value = e.target.value;
+  const value = e.target.message;
   saveToLS(key, value);
 }
 
