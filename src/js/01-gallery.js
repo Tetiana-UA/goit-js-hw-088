@@ -42,8 +42,12 @@ function createMarkup(arr) {
     .join('');
 }
 
+//var lightbox = $('.gallery a').simpleLightbox({
+/* options */
+//});
+
 const lightbox = new SimpleLightbox('.gallery a', {
-  captionData: 'alt',
+  captionsData: 'alt',
   captionPosition: 'bottom',
   captionDelay: 250,
 });

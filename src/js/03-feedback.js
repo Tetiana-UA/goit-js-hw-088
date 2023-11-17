@@ -5,38 +5,54 @@
 //    Під час сабміту форми очищуй сховище і поля форми, а також виводь у консоль об'єкт з полями email, message та їхніми поточними значеннями.
 //    Зроби так, щоб сховище оновлювалось не частіше, ніж раз на 500 мілісекунд. Для цього додай до проекту і використовуй бібліотеку lodash.throttle.
 
-import { saveToLS, loadFromLS } from './helpers';
+import throttle from 'lodash.throttle';
 
 const refs = { formElem: document.querySelector('.feedback-form') };
 
-refs.formElem.addEventListener('input', onFormInput);
+refs.formElem.addEventListener(
+  'input',
+  throttle(function () {
+    const email = refs.formElem.elements.email.value;
+    const message = refs.formElem.elements.message.value;
+    const currentInfo = {
+      email,
+      message,
+    };
+    localStorage.setItem('feedback-form-state', JSON.stringify(currentInfo));
+  }, 500)
+);
+
 refs.formElem.addEventListener('submit', onFormSubmit);
 
-function onFormInput(e) {
-  const key = e.target.email;
-  const value = e.target.message;
-  saveToLS(key, value);
-}
-
 function onLoad() {
-  const email = loadFromLS('email');
-  const message = loadFromLS('message');
+  const infoFromLocalStorage = JSON.parse(
+    localStorage.getItem('feedback-form-state')
+  );
+  if (infoFromLocalStorage !== null) {
+    const { email, message } = infoFromLocalStorage;
+    console.log(infoFromLocalStorage);
 
-  refs.formElem.elements.email.value = email;
-  refs.formElem.elements.message = message;
+    refs.formElem.elements.email.value = email;
+    refs.formElem.elements.message = message;
+  }
 }
 onLoad();
 
 function onFormSubmit(e) {
   e.preventDefault();
+
   const email = refs.formElem.elements.email.value;
   const message = refs.formElem.elements.message.value;
   const object = {
     email,
     message,
   };
+
+  if (email === '' || message === '') {
+    alert('Field in all fields');
+  }
   console.log(object);
-  e.Target.reset();
+  e.target.reset();
   localStorage.removeItem('email');
   localStorage.removeItem('message');
 }
