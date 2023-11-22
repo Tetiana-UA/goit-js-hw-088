@@ -33,7 +33,7 @@ function onLoad() {
     console.log(infoFromLocalStorage);
 
     refs.formElem.elements.email.value = email;
-    refs.formElem.elements.message = message;
+    refs.formElem.elements.message.value = message;
   }
 }
 onLoad();
@@ -49,7 +49,7 @@ function onFormSubmit(e) {
   };
 
   if (email === '' || message === '') {
-    alert('Field in all fields');
+    return alert('Field in all fields');
   }
   console.log(object);
   e.target.reset();
